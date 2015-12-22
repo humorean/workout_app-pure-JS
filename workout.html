@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Daily Workout</title>
+	<meta name="viewport" content="width=device-width"> <!--This declares the viewport optimized in mobile devices-->
+	<link href='http://fonts.googleapis.com/css?family=Ubuntu:400,400italic' rel='stylesheet' type='text/css'> <!--google fonts use font-family: 'Ubuntu', sans-serif;-->
+	<style>
+		#home{  /*This is the home tab on the left side that goes back to the home page*/
+			 background:steelblue;
+			 color:white;
+			 font-weight: 800;
+			 font-size:1.1em;
+			 border:none;
+			 padding:10px;
+			 border-radius:0 0 25% 25%;
+			 position:absolute;
+			 top:0%;
+			 left:0px;
+		}
+
+		#home:hover{
+		 box-shadow:0px -5px 5px black;
+		 background:#888;
+		 color:white;
+		 text-decoration:none;
+		}
+
+		#home:visited{
+		 color:white;
+		}
+
+
+		header{
+			margin:0 auto;
+			text-align:center;
+		}
+		body{
+		background:AliceBlue ;
+		font-family: 'Ubuntu', sans-serif;
+		color:#394154;
+		width:900px;
+		margin:0 auto;
+		}
+
+		#radio_buttons{
+			margin: 0 auto;
+			border:2px ridge steelblue;
+			border-radius:5px;
+			width:300px;
+			padding:2px;
+			background:rgba(70,130,180,0.2);
+		}
+		#radio_buttons h4{
+			margin:0;
+		}
+
+		#burned_calories{
+			display:none;
+		}
+
+		.category_div{
+			margin:5px auto;
+		}
+
+		.inv_div{
+			padding:19px;
+			border:solid steelblue 2px;
+			border-bottom-left-radius:10px;
+			border-bottom-right-radius:10px;
+			width:220px;
+			height:150px;
+			margin:0px 5px 50px;
+			display:inline-block;
+			background-size:cover;
+			box-shadow:3px -3px 10px;
+		}
+
+		.section_title{
+			margin:5px auto 30px;
+			text-decoration:underline;
+		}
+
+		section div p:first-child{
+		 	color:#394154;
+			font-size:1.2em;
+			padding:10px 1px 3px 1px;
+			background:rgba(70,130,180,0.2);
+		 	position:relative;
+		 	top:-78px;
+			left:-21px;
+			border:solid 2px steelblue;
+			border-top-right-radius:100%;
+			width:256px;
+			box-shadow:3px -3px 10px;
+		}
+
+		#main_content{
+
+		}
+
+
+		.rep_cal{
+			position:relative;
+			left:135px;
+			top:28px;
+			font-size:0.9em;
+			color:steelblue;
+			padding:3px;
+			background:rgba(20,19,15,0.6);
+			width:95px;
+			border-radius:5px;
+		}
+
+		.container{
+
+
+		}
+
+		.col_1,.col_2,.col_3{
+
+		}
+		#generate_btn{
+
+		}
+		#reset_btn{
+			display:none;
+		}
+		.main_btn{
+			margin:10px auto 0px;
+			background:steelblue;
+			border-radius:5px;
+			border:solid steelblue 1px;
+			color:#eee;
+			font-size:1.3em;
+
+		}
+		.main_btn:hover{
+			margin:10px auto 0px;
+			background:steelblue;
+			border-radius:5px;
+			border:solid steelblue 1px;
+			color:#eee;
+			font-size:1.3em;
+			opacity:0.8;
+			cursor:pointer;
+		}
+		.complete_img{
+			width:220px;
+			height:150px;
+			position:relative;
+			top:-190px;
+			display:none;
+		}
+		.btn_done{
+			background:steelblue;
+			border-radius:5px;
+			border:solid steelblue 1px;
+			color:#eee;
+			position:relative;
+			top:-20px;
+			left:-17px;
+			padding:5px 7px;
+			font-size:1.1em;
+
+		}
+		.btn_done:hover{
+			background:steelblue;
+			border-radius:5px;
+			border:solid steelblue 1px;
+			color:#fff;
+			opacity:0.9;
+			cursor:pointer;
+
+		}
+
+		/*media Query Starts ***************************************************************/
+		@media(max-width:660px){
+			body{
+				width:90%;
+				}
+			.inv_div{
+				display:block;
+			}
+
+			#home{
+			 border-radius:25% 25% 0 0;
+			 top:9%;
+			 left:-62px;
+			 transform:rotate(90deg);
+			 -ms-transform:rotate(90deg);
+			 -webkit-transform:rotate(90deg);
+			}
+		}
+
+
+	</style>
+</head>
+
+<body>
+	<!------------------Home side tab------------------------------------>
+	<nav id="home_nav">
+		<a href="index.html" id="home">MZProjects Home</a>
+	</nav>
+	<!-------------------------End Home Side tab-------------------------------->
+	<header>
+		<h1>Daily Workout Routine</h1>
+		<div id="radio_buttons">
+			<h4>Please Pick Repetition Preference: </h4>
+			<input type="radio" name="rep" value="low_rep"  id="lrep_button" onclick="lrep_button_click()"><label for="lrep_button">Low Reps</label>
+			<input type="radio" name="rep" value="high_rep" id="hrep_button" onclick="hrep_button_click()"><label for="hrep_button">High Reps</label>
+		</div>
+		<button type="button" id="generate_btn" class="main_btn" onclick=generate_button() disabled>Generate Workout Plan</button>
+		<button type="button" id="reset_btn" class="main_btn" onclick=reset()>Reset</button>
+		<h3 id="burned_calories">Total Calories Burned:<span id="total_cal"></span> </h3>
+
+	</header>
+	<section id="main_content">
+
+		<div id="arms_section" style="display:none" class="container category_div">
+			<h3 class="section_title">Arms Workout:</h3><br>
+			<div id="arms_1" class="col_1 inv_div">
+				<p></p>
+				<p class="rep_cal"></p>
+				<p class="rep_cal"></p>
+				<button type="button" onclick=done(this) class="btn_done">Done</button>
+				<img class="complete_img" src="pictures/completed.png">
+			</div>
+
+			<div id="arms_2" class="col_2 inv_div">
+				<p></p>
+				<p class="rep_cal"></p>
+				<p class="rep_cal"></p>
+				<button type="button" onclick=done(this) class="btn_done">Done</button>
+				<img class="complete_img" src="pictures/completed.png">
+			</div>
+
+			<div id="arms_3" class="col_3 inv_div">
+				<p></p>
+				<p class="rep_cal"></p>
+				<p class="rep_cal"></p>
+				<button type="button" onclick=done(this) class="btn_done">Done</button>
+				<img class="complete_img" src="pictures/completed.png">
+			</div>
+
+		</div>
+		<br>
+		<div id="abs_section" style="display:none" class="container category_div">
+		<h3 class="section_title">Abs Workout:</h3><br>
+			<div id="abs_1" class="col_1 inv_div">
+				<p></p>
+				<p class="rep_cal"></p>
+				<p class="rep_cal"></p>
+				<button type="button" onclick=done(this) class="btn_done">Done</button>
+				<img class="complete_img" src="pictures/completed.png">
+			</div>
+
+			<div id="abs_2" class="col_2 inv_div">
+				<p></p>
+				<p class="rep_cal"></p>
+				<p class="rep_cal"></p>
+				<button type="button" onclick=done(this) class="btn_done">Done</button>
+				<img class="complete_img" src="pictures/completed.png">
+			</div>
+
+			<div id="abs_3" class="col_3 inv_div">
+				<p></p>
+				<p class="rep_cal"></p>
+				<p class="rep_cal"></p>
+				<button type="button" onclick=done(this) class="btn_done">Done</button>
+				<img class="complete_img" src="pictures/completed.png">
+			</div>
+
+		</div>
+		<br>
+		<div id="legs_section" style="display:none" class="container category_div">
+		<h3 class="section_title">Legs Workout:</h3><br>
+			<div id="legs_1" class="col_1 inv_div">
+				<p></p>
+				<p class="rep_cal"></p>
+				<p class="rep_cal"></p>
+				<button type="button" onclick=done(this) class="btn_done">Done</button>
+				<img class="complete_img" src="pictures/completed.png">
+			</div>
+
+			<div id="legs_2" class="col_2 inv_div">
+				<p></p>
+				<p class="rep_cal"></p>
+				<p class="rep_cal"></p>
+				<button type="button" onclick=done(this) class="btn_done">Done</button>
+				<img class="complete_img" src="pictures/completed.png">
+			</div>
+
+			<div id="legs_3" class="col_3 inv_div">
+				<p></p>
+				<p class="rep_cal"></p>
+				<p class="rep_cal"></p>
+				<button type="button" onclick=done(this) class="btn_done">Done</button>
+				<img class="complete_img" src="pictures/completed.png">
+			</div>
+
+		</div>
+	</section>
+
+	<script>
+		function done(para_1){
+			para_1.disabled=true;      //set button to disable when clicked
+			var p = para_1.parentNode;
+			document.getElementById("total_cal").innerHTML=Number(document.getElementById("total_cal").innerHTML)+Number(p.childNodes[5].innerHTML.substring(p.childNodes[5].innerHTML.length,9)); //log calories to the total calories span
+			p.childNodes[9].style.display="block"; //show the completed stamp when done
+			p.style.opacity="0.8";
+
+		};//done fuction ends
+
+
+		var arms_array = [];                        //initialize this  arms workout array
+		function append_arms_array(){                //this function is to add objects into the arms_array
+			arms_array.push(
+				{file:"pictures/ar_1.gif",title:"Shoulder Ball Pass",cal:2,lrep:15,hrep:20},
+				{file:"pictures/ar_2.gif",title:"Tricep Curls",cal:1.5,lrep:18,hrep:25},
+				{file:"pictures/ar_3.gif",title:"Push Ups",cal:3,lrep:15,hrep:25},
+				{file:"pictures/ar_4.gif",title:"Bicep Curls",cal:1,lrep:20,hrep:30},
+				{file:"pictures/ar_5.gif",title:"Sincle Bicep Curls",cal:1.5,lrep:18,hrep:25},
+				{file:"pictures/ar_6.gif",title:"Tricep Push",cal:3,lrep:15,hrep:20},
+				{file:"pictures/ar_7.gif",title:"Overhead Ball Pass",cal:2,lrep:18,hrep:25},
+				{file:"pictures/ar_8.gif",title:"Medicine Ball Push Ups",cal:3,lrep:15,hrep:20},
+				{file:"pictures/ar_9.gif",title:"Side Ball Throw",cal:2,lrep:20,hrep:28},
+				{file:"pictures/ar_10.gif",title:"Verticle Ball Throw",cal:3,lrep:20,hrep:28}
+			);
+		};
+		var abs_array = [];                        //initialize this abs workout array
+		function append_abs_array(){                //this function is to add objects into the arms_array
+			abs_array.push(
+				{file:"pictures/ab_1.gif",title:"Push Crunch",cal:1.5,lrep:20,hrep:30},
+				{file:"pictures/ab_2.gif",title:"Side Shuffles",cal:1,lrep:18,hrep:25},
+				{file:"pictures/ab_3.gif",title:"Roll Backs",cal:2,lrep:15,hrep:20},
+				{file:"pictures/ab_4.gif",title:"Butterfly Kicks",cal:2,lrep:20,hrep:30},
+				{file:"pictures/ab_5.gif",title:"Side Knee Ups",cal:2,lrep:20,hrep:30},
+				{file:"pictures/ab_6.gif",title:"Chopper",cal:2,lrep:20,hrep:25},
+				{file:"pictures/ab_7.gif",title:"Side Chopper",cal:2,lrep:20,hrep:25},
+				{file:"pictures/ab_8.gif",title:"Roller",cal:2,lrep:20,hrep:30},
+				{file:"pictures/ab_9.gif",title:"Side Crunches",cal:2,lrep:15,hrep:25},
+				{file:"pictures/ab_10.gif",title:"Toe-Touch Crunches",cal:1.5,lrep:20,hrep:25}
+			);
+		};
+
+		var legs_array = [];                        //initialize this array
+		function append_legs_array(){                //this function is to add objects into the arms_array
+			legs_array.push(
+				{file:"pictures/le_1.gif",title:"Squad",cal:3,lrep:20,hrep:25},
+				{file:"pictures/le_2.gif",title:"Forward Side Squad",cal:2,lrep:20,hrep:25},
+				{file:"pictures/le_3.gif",title:"Kneel Straight Kicks",cal:2,lrep:20,hrep:25},
+				{file:"pictures/le_4.gif",title:"Kneel Kick Ups",cal:2,lrep:20,hrep:25},
+				{file:"pictures/le_5.gif",title:"Kneel leg Ups",cal:2,lrep:20,hrep:25},
+				{file:"pictures/le_6.gif",title:"Wall Squads",cal:3,lrep:20,hrep:25},
+				{file:"pictures/le_7.gif",title:"Straight Legs Up",cal:3,lrep:15,hrep:20},
+				{file:"pictures/le_8.gif",title:"4_Count Jumping Jacks",cal:3,lrep:18,hrep:25},
+				{file:"pictures/le_9.gif",title:"Verticle Hopper",cal:3,lrep:15,hrep:20}
+			);
+		};
+		function empty_array(){                   //this function is to empty the array
+			arms_array.splice(0,arms_array.length);
+			abs_array.splice(0,abs_array.length);
+			legs_array.splice(0,legs_array.length);
+		};
+
+		var generate_button = function(){
+		   	if(document.getElementById("lrep_button").checked==false && document.getElementById("hrep_button").checked==false){
+				alert("Please Pick Either Low Repetition or High Repetition");
+			}else{
+			document.getElementById("burned_calories").style.display="inline-block";
+			document.getElementById("generate_btn").style.display="none";  //hide the generate button
+			document.getElementById("reset_btn").style.display="inline";       //show the reset button
+			document.getElementById("arms_section").style.display="inline"; //show the div content
+			document.getElementById("abs_section").style.display="inline"; //show the div content
+			document.getElementById("legs_section").style.display="inline"; //show the div content
+			var x = document.getElementById("main_content").getElementsByTagName("button");  //set x to equal all buttons
+			var i;  //counter i
+			for (i=0; i<x.length; i++){  //for each i less than the button's count, loop through the function
+				x[i].disabled=false;  //make all div available when generate button is clicked
+			};
+			append_arms_array();                        //call and use append function to add all objects into arms_array
+			append_abs_array();                        //call and use append function to add all objects into arms_array
+			append_legs_array();                        //call and use append function to add all objects into arms_array
+
+			var rand_1 = Math.floor(Math.random()*arms_array.length);         //create a random number
+			document.getElementById("arms_1").style.backgroundImage="url(" + arms_array[rand_1].file+ ")";
+			document.getElementById("arms_1").childNodes[1].innerHTML=arms_array[rand_1].title;
+			if(document.getElementById("lrep_button").checked==true){  //if lrep radio btn selected, then use lrep count
+				document.getElementById("arms_1").childNodes[3].innerHTML="Reps: "+arms_array[rand_1].lrep;
+				document.getElementById("arms_1").childNodes[5].innerHTML="Calories: "+arms_array[rand_1].cal*arms_array[rand_1].lrep;
+			}else if(document.getElementById("hrep_button").checked==true){
+				document.getElementById("arms_1").childNodes[3].innerHTML="Reps: "+arms_array[rand_1].hrep;
+				document.getElementById("arms_1").childNodes[5].innerHTML="Calories: "+arms_array[rand_1].cal*arms_array[rand_1].hrep;
+			};
+			arms_array.splice(rand_1, 1);
+
+			var rand_2 = Math.floor(Math.random()*arms_array.length);
+			document.getElementById("arms_2").style.backgroundImage="url(" + arms_array[rand_2].file+ ")";
+			document.getElementById("arms_2").childNodes[1].innerHTML=arms_array[rand_2].title;
+			if(document.getElementById("lrep_button").checked==true){  //if lrep radio btn selected, then use lrep count
+				document.getElementById("arms_2").childNodes[3].innerHTML="Reps: "+arms_array[rand_2].lrep;
+				document.getElementById("arms_2").childNodes[5].innerHTML="Calories: "+arms_array[rand_2].cal*arms_array[rand_2].lrep;
+			}else if(document.getElementById("hrep_button").checked==true){
+				document.getElementById("arms_2").childNodes[3].innerHTML="Reps: "+arms_array[rand_2].hrep;
+				document.getElementById("arms_2").childNodes[5].innerHTML="Calories: "+arms_array[rand_2].cal*arms_array[rand_2].hrep;
+			};
+			arms_array.splice(rand_2, 1);
+
+			var rand_3 = Math.floor(Math.random()*arms_array.length);
+			document.getElementById("arms_3").style.backgroundImage="url(" + arms_array[rand_3].file+ ")";
+			document.getElementById("arms_3").childNodes[1].innerHTML=arms_array[rand_3].title;
+			if(document.getElementById("lrep_button").checked==true){  //if lrep radio btn selected, then use lrep count
+				document.getElementById("arms_3").childNodes[3].innerHTML="Reps: "+arms_array[rand_3].lrep;
+				document.getElementById("arms_3").childNodes[5].innerHTML="Calories: "+arms_array[rand_3].cal*arms_array[rand_3].lrep;
+			}else if(document.getElementById("hrep_button").checked==true){
+				document.getElementById("arms_3").childNodes[3].innerHTML="Reps: "+arms_array[rand_3].hrep;
+				document.getElementById("arms_3").childNodes[5].innerHTML="Calories: "+arms_array[rand_3].cal*arms_array[rand_3].hrep;
+			};
+			arms_array.splice(rand_3, 1);
+
+			var rand_4 = Math.floor(Math.random()*abs_array.length);
+			document.getElementById("abs_1").style.backgroundImage="url(" + abs_array[rand_4].file+ ")";
+			document.getElementById("abs_1").childNodes[1].innerHTML=abs_array[rand_4].title;
+			if(document.getElementById("lrep_button").checked==true){  //if lrep radio btn selected, then use lrep count
+				document.getElementById("abs_1").childNodes[3].innerHTML="Reps: "+abs_array[rand_4].lrep;
+				document.getElementById("abs_1").childNodes[5].innerHTML="Calories: "+abs_array[rand_4].cal*abs_array[rand_4].lrep;
+			}else if(document.getElementById("hrep_button").checked==true){
+				document.getElementById("abs_1").childNodes[3].innerHTML="Reps: "+abs_array[rand_4].hrep;
+				document.getElementById("abs_1").childNodes[5].innerHTML="Calories: "+abs_array[rand_4].cal*abs_array[rand_4].hrep;
+			};
+			abs_array.splice(rand_4, 1);
+
+				var rand_5 = Math.floor(Math.random()*abs_array.length);
+			document.getElementById("abs_2").style.backgroundImage="url(" + abs_array[rand_5].file+ ")";
+			document.getElementById("abs_2").childNodes[1].innerHTML=abs_array[rand_5].title;
+			if(document.getElementById("lrep_button").checked==true){  //if lrep radio btn selected, then use lrep count
+				document.getElementById("abs_2").childNodes[3].innerHTML="Reps: "+abs_array[rand_5].lrep;
+				document.getElementById("abs_2").childNodes[5].innerHTML="Calories: "+abs_array[rand_5].cal*abs_array[rand_5].lrep;
+			}else if(document.getElementById("hrep_button").checked==true){
+				document.getElementById("abs_2").childNodes[3].innerHTML="Reps: "+abs_array[rand_5].hrep;
+				document.getElementById("abs_2").childNodes[5].innerHTML="Calories: "+abs_array[rand_5].cal*abs_array[rand_5].hrep;
+			};
+			abs_array.splice(rand_5, 1);
+
+				var rand_6 = Math.floor(Math.random()*abs_array.length);
+			document.getElementById("abs_3").style.backgroundImage="url(" + abs_array[rand_6].file+ ")";
+			document.getElementById("abs_3").childNodes[1].innerHTML=abs_array[rand_6].title;
+			if(document.getElementById("lrep_button").checked==true){  //if lrep radio btn selected, then use lrep count
+				document.getElementById("abs_3").childNodes[3].innerHTML="Reps: "+abs_array[rand_6].lrep;
+				document.getElementById("abs_3").childNodes[5].innerHTML="Calories: "+abs_array[rand_6].cal*abs_array[rand_6].lrep;
+			}else if(document.getElementById("hrep_button").checked==true){
+				document.getElementById("abs_3").childNodes[3].innerHTML="Reps: "+abs_array[rand_6].hrep;
+				document.getElementById("abs_3").childNodes[5].innerHTML="Calories: "+abs_array[rand_6].cal*abs_array[rand_6].hrep;
+			};
+			abs_array.splice(rand_4, 1);
+
+			var rand_7 = Math.floor(Math.random()*legs_array.length);
+			document.getElementById("legs_1").style.backgroundImage="url(" + legs_array[rand_7].file+ ")";
+			document.getElementById("legs_1").childNodes[1].innerHTML=legs_array[rand_7].title;
+			if(document.getElementById("lrep_button").checked==true){  //if lrep radio btn selected, then use lrep count
+				document.getElementById("legs_1").childNodes[3].innerHTML="Reps: "+legs_array[rand_7].lrep;
+				document.getElementById("legs_1").childNodes[5].innerHTML="Calories: "+legs_array[rand_7].cal*legs_array[rand_7].lrep;
+			}else if(document.getElementById("hrep_button").checked==true){
+				document.getElementById("legs_1").childNodes[3].innerHTML="Reps: "+legs_array[rand_7].hrep;
+				document.getElementById("legs_1").childNodes[5].innerHTML="Calories: "+legs_array[rand_7].cal*legs_array[rand_7].hrep;
+			};
+			legs_array.splice(rand_7, 1);
+
+			var rand_8 = Math.floor(Math.random()*legs_array.length);
+			document.getElementById("legs_2").style.backgroundImage="url(" + legs_array[rand_8].file+ ")";
+			document.getElementById("legs_2").childNodes[1].innerHTML=legs_array[rand_8].title;
+			if(document.getElementById("lrep_button").checked==true){  //if lrep radio btn selected, then use lrep count
+				document.getElementById("legs_2").childNodes[3].innerHTML="Reps: "+legs_array[rand_8].lrep;
+				document.getElementById("legs_2").childNodes[5].innerHTML="Calories: "+legs_array[rand_8].cal*legs_array[rand_8].lrep;
+			}else if(document.getElementById("hrep_button").checked==true){
+				document.getElementById("legs_2").childNodes[3].innerHTML="Reps: "+legs_array[rand_8].hrep;
+				document.getElementById("legs_2").childNodes[5].innerHTML="Calories: "+legs_array[rand_8].cal*legs_array[rand_8].hrep;
+			};
+			legs_array.splice(rand_8, 1);
+
+			var rand_9 = Math.floor(Math.random()*legs_array.length);
+			document.getElementById("legs_3").style.backgroundImage="url(" + legs_array[rand_9].file+ ")";
+			document.getElementById("legs_3").childNodes[1].innerHTML=legs_array[rand_9].title;
+			if(document.getElementById("lrep_button").checked==true){  //if lrep radio btn selected, then use lrep count
+				document.getElementById("legs_3").childNodes[3].innerHTML="Reps: "+legs_array[rand_9].lrep;
+				document.getElementById("legs_3").childNodes[5].innerHTML="Calories: "+legs_array[rand_9].cal*legs_array[rand_9].lrep;
+			}else if(document.getElementById("hrep_button").checked==true){
+				document.getElementById("legs_3").childNodes[3].innerHTML="Reps: "+legs_array[rand_9].hrep;
+				document.getElementById("legs_3").childNodes[5].innerHTML="Calories: "+legs_array[rand_9].cal*legs_array[rand_9].hrep;
+			};
+			legs_array.splice(rand_9, 1);
+
+			empty_array();                   //empty the array so when user press generate button it will restart the array objects.
+			};//end else statment
+		}//end of generate_button function
+
+		var reset = function(){                  //to hide all pictures and un-disable/un-check all radio buttons
+			//document.getElementById("arms_section").style.display="none";
+			//document.getElementById("abs_section").style.display="none";
+			//document.getElementById("legs_section").style.display="none";
+			var section_div=document.getElementById("main_content").getElementsByTagName("div");
+			var pi;
+			for(pi=0; pi<section_div.length;pi+=4){  //hide all arms, abs and legs section div. div child starts from 0 and get every 4th div.
+				section_div[pi].style.display="none";
+			};
+
+			var individual_div = document.getElementsByClassName("inv_div");
+			var div_pi;
+			for (div_pi=0; div_pi<individual_div.length;div_pi++){
+				individual_div[div_pi].style.opacity="1.0";
+			};
+
+			var images = document.getElementsByClassName("complete_img");
+			var img_i;
+			for(img_i = 0; img_i < images.length; img_i++){
+				images[img_i].style.display="none";
+			}
+
+			document.getElementById("lrep_button").disabled=false;
+			document.getElementById("hrep_button").disabled=false;
+			document.getElementById("lrep_button").checked=false;
+			document.getElementById("hrep_button").checked=false;
+			document.getElementById("total_cal").innerHTML="";
+			document.getElementById("reset_btn").style.display="none";
+			document.getElementById("generate_btn").style.display="inline-block";
+			document.getElementById("generate_btn").disabled=true;
+			document.getElementById("burned_calories").style.display="none";
+
+		}//Ends Reset Function
+
+		function lrep_button_click(){
+		 document.getElementById("hrep_button").disabled=true;
+		 document.getElementById("generate_btn").disabled=false;
+		}
+
+		function hrep_button_click(){
+		 document.getElementById("lrep_button").disabled=true;
+		 document.getElementById("generate_btn").disabled=false;
+		}
+
+		window.onscroll = function(){
+
+		if(window.pageYOffset > 0 ){  //use window.pageYOffset to get the scrolled vertical position of the window browser
+			document.getElementById("burned_calories").style.position = "fixed";  //freeze the top navigation
+			document.getElementById("burned_calories").style.left = "0px"; //px from the left set to 0px
+			document.getElementById("burned_calories").style.top = "-18px"; //px from the top set to 0px
+			document.getElementById("burned_calories").style.boxShadow = "5px 5px 25px";  //add box shadow to navigation bar when scroll
+			document.getElementById("burned_calories").style.background = "AliceBlue";
+			document.getElementById("burned_calories").style.borderRadius = "3%";
+			document.getElementById("burned_calories").style.padding = "10px";
+			document.getElementById("burned_calories").style.zIndex="1";
+
+
+
+		}
+		else{
+			document.getElementById("burned_calories").style.position = "relative";  //when scrolled back to the top, restore the original CSS
+			document.getElementById("burned_calories").style.top = "0px"; //px from the top set to 0px
+			document.getElementById("burned_calories").style.boxShadow = "0px 0px 0px";
+			document.getElementById("burned_calories").style.background = "AliceBlue";
+
+		}
+
+};//ends freeze navigation
+	</script>
+</body>
+</html>
